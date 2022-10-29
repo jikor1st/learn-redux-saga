@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div>
+    <button>watch next</button>
+  </div>
+  <script>
+    (function () {
+
+      window.addEventListener('DOMContentLoaded', () => {
+
+        function* watchGenerator() {
+          console.log('모니터링 시작!');
+          while (true) {
+            const action = yield;
+            if (action.type === 'HELLO') {
+              console.log('안녕하세요?');
+            }
+            if (action.type === 'BYE') {
+              console.log('안녕히가세요.');
+            }
+          }
+        }
+        const watch = watchGenerator();
+        const buttonEl = document.querySelector('button');
+
+        let step = 'HELLO';
+        buttonEl.addEventListener('click', () => {
+          watch.next({ type: step });
+
+          if (step === 'HELLO') {
+            step = 'BYE';
+          } else if (step === 'BYE') {
+            step = 'GO';
+          } else {
+            step = 'HELLO'
+          }
+        })
+      })
+    })()
+  </script>
+</body>
+
+</html>
